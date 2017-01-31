@@ -1,0 +1,432 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/night.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				  <section>
+              <h1>Why Haskell?</h1>
+              <h3>Brian Jones <a href="https://twitter.com/mojobojo">@mojobojo</a></h3>
+          </section>
+				  <section>
+              <h3>Introduction</h3>
+          </section>
+				  <section>
+              <h3>Haskell Motivation</h3>
+              <section>High chance of bug free software due to strong types.</section>
+              <section>Stong types lead to more correct software.</section>
+              <section>Ease of long term maintenance due to refactoring without fear.</section>
+              <section>Fast, low memory, binary.</section>
+          </section>
+				  <section>
+              <h3>Rumors</h3>
+              <p>I heard it…</p>
+              <section>Is a math language. I have to learn lambda calculus to even use it.</section>
+              <section>Is a research language. Only language researchers use it.</section>
+              <section>Is not used in production systems.</section>
+              <section>Is incredibly hard to learn.</section>
+              <section>Uses crazy terms like Monoid, Applicative, Monad.</section>
+          </section>
+				  <section>
+              <h3>Concerns</h3>
+              <section>
+                  <p>Not a corporate backed programming language.</p>
+                      <ul>
+                          <li>Oracle (Sun) - Java</li>
+                          <li>Microsoft - C#/F#</li>
+                          <li>Google - Go</li>
+                          <li>Ericsson - Erlang (Elixir)</li>
+                          <li>Everyone - Javascript</li>
+                      </ul>
+              </section>
+              <section>
+                  <p>Smaller community compared to other popular languages.</p>
+                  <p class="fragment fade-in">Therefore smaller library ecosystem.</p>
+              </section>
+          </section>
+				  <section>
+              <h3>Benefits</h3>
+              <section>Pure. Equational reasoning.</section>
+              <section>IO is separate. Controlled side effects.</section>
+              <section>Strongly typed. Hindley-Milner type system. Algebraic Data Types.</section>
+              <section>Immutable. No possibisectionty of mis-referencing variables and stomping on data.</section>
+              <section>No NULL. Compile time guarantees that your appsectioncation won’t crash.</section>
+              <section>Functional. Better abstractions. More reusable code.</section>
+              <section>Lazy evaluation.</section>
+          </section>
+				  <section>
+              <h3>Secret Weapon</h3>
+              <p>Refactor with impunity</p>
+              <section>Come back to an old project 6-12 months later and dive right in.</section>
+              <section>The compiler will guide you until everything builds cleanly.</section>
+              <section>No more wondering if an unrelated sub-module will break in production.</section>
+          </section>
+				  <section>
+              <h3>Compile Time Guarantees</h3>
+              <blockquote>“If it compiles, it does exactly what you wanted.” -- Haskellers</blockquote>
+              <section>Strong type system makes it much harder to make mistakes.</section>
+              <section>Pattern matching makes it impossible to pass non-compsectionant parameters to functions.</section>
+              <section>No NULL. Maybe and Either types allow all possible failure cases to be handled.</section>
+              <section>All code paths are checked for completeness.</section>
+          </section>
+				  <section>
+              <h3>Purity</h3>
+              <div style="float:left;width:60%;">
+                  <pre><code data-trim data-noescape>
+                  int add(int a, int b) {
+                    fireTheMissiles();
+                    return a + b;
+                  }
+                  </code></pre>
+              </div>
+              <div style="float:right;width:40%;">
+                  <img src="images/haskell_2x.png" style="width:50%;height:50%;"/>
+              </div>
+          </section>
+				  <section>
+              <h3>Purity - Haskell</h3>
+              IO
+              <pre><code data-trim data-noescape>
+              add :: Int -> Int -> IO Int
+              add x y = do
+                fireTheMissiles -- this is possible
+                return (x + y)
+              </code></pre>
+              Pure
+              <pre><code data-trim data-noescape>
+              add :: Int -> Int -> Int
+              add x y = x + y -- we can't fireTheMissiles here
+              </code></pre>
+          </section>
+				  <section>
+              <h3>Algebraic Data Types</h3>
+              <pre><code data-trim data-noescape>
+              data Animal = Dog String | Cat String
+
+              talk :: Animal -> String
+              talk (Dog s) = "A dog says " ++ s
+              talk (Cat s) = "A cat says " ++ s
+
+              main :: IO ()
+              main = do
+                putStrLn . talk $ Dog "bark"
+                putStrLn . talk $ Cat "meow"
+              </code></pre>
+				  </section>
+				  <section>
+              <h3>ADTs - Polymorphism</h3>
+              <pre><code data-trim data-noescape>
+              data Shape a = Circle a | Rectangle a a
+
+              area :: (Num a, Floating a) => Shape a -> a
+              area (Circle r)      = pi * (r ^ 2)
+              area (Rectangle w h) = w * l
+
+              main :: IO ()
+              main = do
+                putStrLn . show $ area (Circle 10)
+                putStrLn . show $ area (Rectangle 1.0 2.0)
+              </code></pre>
+          </section>
+				  <section>
+              <h3>No NULL</h3>
+              <blockquote style="font-size:0.75em">I call it my billion-dollar mistake. It was the invention of the null reference in 1965. At that time, I was designing the first comprehensive type system for references in an object oriented language (ALGOL W). My goal was to ensure that all use of references should be absolutely safe, with checking performed automatically by the compiler. But I couldn't resist the temptation to put in a null reference, simply because it was so easy to implement. This has led to innumerable errors, vulnerabilities, and system crashes, which have probably caused a billion dollars of pain and damage in the last forty years -- Tony Hoare</blockquote>
+          </section>
+				  <section>
+              <h3>No NULL - Maybe</h3>
+              <pre><code data-trim data-noescape>
+              data Maybe a = Nothing | Just a
+
+              f :: Int -> Maybe Int
+              f 0 = Nothing
+              f x = Just x
+
+              main :: IO ()
+              main = case f 10 of
+                       Nothing -> putStrLn "zero"
+                       Just x  -> putStrLn $ show x
+             </code></pre>
+          </section>
+				  <section>
+              <h3>No NULL - Either</h3>
+              <pre><code data-trim data-noescape>
+              data Either a b = Left a | Right b
+
+              f :: Int -> Either String Int
+              f 0 = Left "zero"
+              f x = Right x
+
+              main :: IO ()
+              main =
+                case f 10 of
+                  Left s  -> putStrLn $ "fail: " ++ s
+                  Right v -> putStrLn $ "success: " ++ show v
+              </code></pre>
+          </section>
+				  <section>
+              <h3>Functional</h3>
+              <section>More focus on generasectionty ends up with better absractions.</section>
+              <section>Less focus on <i>how</i> to manipulate data and more on the final result.</section>
+              <section>Higher level abstractions means less code and easier to reason about.</section>
+              <section>Composability.</section>
+          </section>
+				  <section>
+              <h3>Functional vs. Imperative</h3>
+              <div style="float:left;width:50%;">
+                  C
+                  <pre><code data-trim data-noescape>
+                  int x = 0;
+                  for (int i = 0; i < 10; i++)
+                  {
+                    x += i;
+                  }
+                  </code></pre>
+                  Haskell
+                  <pre><code data-trim data-noescape>
+                  let x = foldr (+) 0 [0..9]
+                  </code></pre>
+              </div>
+              <div style="float:right;width:40%;">
+                  <img src="images/functional_2x.png" class="right" style="width:50%;height:50%;"/>
+              </div>
+          </section>
+				  <section>
+              <h3>Composable</h3>
+              Imperative
+              <pre><code data-trim data-noescape>
+              add(10, sub(5, div(6, 4)));
+              </code></pre>
+              Functional
+              <pre><code data-trim data-noescape>
+              add 10 . sub 5 . div 6 $ 4
+              </code></pre>
+          </section>
+				  <section>
+              <h3>Tooling</h3>
+              <pre><code data-trim data-noescape>
+              stack new project
+              cd project
+
+              # edit project.cabal -- libraries, build settings, etc.
+              # maybe edit stack.yaml -- one off libraries, settings, etc.
+
+              stack setup # one time thing -- pulls in compiler version
+              stack test # run tests
+              stack bench # run any code benchmarks
+              stack build # pulls in any new cabal deps and builds
+              stack install # build and install to local destination
+              </code></pre>
+          </section>
+				  <section>
+              <h3>Testing</h3>
+              <ul>
+                  <li><a href="https://hackage.haskell.org/package/QuickCheck">QuickCheck</a>: Property testing.</li>
+                  <li><a href="https://hackage.haskell.org/package/hspec">HSpec</a>: Standard unit testing.</li>
+                  <li><a href="https://hackage.haskell.org/package/tasty">Tasty</a>: Alternative.</li>
+              </ul>
+          </section>
+				  <section>
+              <h3>AlasConnect Tech Stack</h3>
+              <section>
+                  <p>Type check from the UI down to the DB</p>
+                  <p>UI: <a href="https://hackage.haskell.org/package/reflex">reflex</a>/<a href="https://hackage.haskell.org/package/reflex-dom">reflex-dom</a> (FRP)</p>
+                  <p>API: <a href="https://hackage.haskell.org/package/servant-server">servant</a> (<a href="https://haskell-servant.readthedocs.io">docs</a>)</p>
+                  <p>DB: <a href="https://github.com/k0001/tisch">tisch</a> (<a href="http://ren.zone/articles/opaleye-sot">explanation</a>) (<a href="https://hackage.haskell.org/package/opaleye">opaleye</a>) (PostgreSQL)</p>
+              </section>
+              <section
+                  <p>Additional:</p>
+                  <p>JSON/Yaml: <a href="https://hackage.haskell.org/package/aeson">aeson</a></p>
+                  <p>Encryption: <a href="https://hackage.haskell.org/package/scrypt">scrypt</a></p>
+              </section>
+          </section>
+				  <section>
+              <h3>AlasConnect Tech Stack</h3>
+              <section>Frontend and backend share common logic allowing for reuse of code. (No split brain)</section>
+              <section>Frontend compiles to a single page application with GHCJS.</section>
+              <section>Backend compiles to a binary with GHC and exposes a REST API.</section>
+          </section>
+				  <section>
+              <h3>Database - Tisch (Opaleye)</h3>
+              <pre><code data-trim data-noescape>
+              data Db1
+              data TUser
+              data instance Table TUser      = TUser
+              type instance Database TUser   = Db1
+              type instance SchemaName TUser = "public"
+              type instance TableName TUser  = "users"
+
+              newtype UserId = UserId { unUserId :: Int32 }
+              -- and a few more instances to help with tisch logic
+             </code></pre>
+          </section>
+				  <section>
+              <h3>Database - Tisch (Opaleye)</h3>
+              <pre><code data-trim data-noescape>
+              type instance Columns TUser =
+                [ 'Column "user_id"   'WD 'R  UserId        UserId
+                , 'Column "username"  'W  'R  Username      Username
+                , 'Column "password"  'W  'R  PasswordE     PasswordE
+                , 'Column "email"     'W  'R  Email         Email
+                , 'Column "verify_t"  'W  'R  Token         Token
+                , 'Column "verified"  'WD 'R  PGBool        Bool
+                , 'Column "created"   'WD 'R  PGTimestamptz UTCTime
+                , 'Column "logged_in" 'WD 'R  PGTimestamptz UTCTime
+                ]
+             </code></pre>
+          </section>
+				  <section>
+              <h3>Database - Tisch (Opaleye)</h3>
+              <p>Build type safe queries</p>
+              <pre><code data-trim data-noescape>
+              userQueryById :: UserId -> Query Db1 () (PgR TUser)
+              userQueryById uid = proc () -> do
+                u <- query TUser -< ()
+                restrict -< eq (#user_id u) (kol uid)
+                returnA -< u
+
+              userFetch :: (MonadIO m, MonadThrow m) =>
+                           UserId -> Conn' -> m (Maybe (HsR TUser))
+              userFetch uid conn = runQuery1 conn (userQueryById uid)
+             </code></pre>
+          </section>
+				  <section>
+              <h3>API - Servant</h3>
+              <pre><code data-trim data-noescape>
+              type UserGet =
+                AppAuth :> Capture "id" UserId :> Get '[JSON] (Maybe UserR)
+              type UserInsert =
+                ReqBody '[JSON] UserW :> Post '[JSON] (Maybe UserR)
+              type UserUpdate =
+                AppAuth :> ReqBody '[JSON] UserU :> Put '[JSON] ()
+             </code></pre>
+          </section>
+				  <section>
+              <h3>API - Servant</h3>
+              <pre><code data-trim data-noescape>
+              getUser :: Maybe Session -> UserId -> AppM (Maybe UserR)
+              getUser ms uid =
+                withSession ms $ \_ ->
+                  getConn >>= userFetch uid >>= mapM (pure . hsRToUserR)
+
+              insertUser :: UserW -> AppM (Maybe UserR)
+              insertUser u = do
+                r <- userInsert u =<< getConn
+                case r of
+                  Left e   -> throwError err400 { errBody = pack . show $ e }
+                  Right r' -> mapM (pure . hsRToUserR) r'
+             </code></pre>
+          </section>
+				  <section>
+              <h3>UI - Reflex</h3>
+              <pre><code data-trim data-noescape>
+             </code></pre>
+          </section>
+				  <section>
+              <h3>JSON - Aeson</h3>
+              <pre><code data-trim data-noescape>
+              data UserR
+                = UserR
+                { _urUserId   :: UserId
+                , _urUsername :: Username
+                , _urPassword :: PasswordE
+                , _urEmail    :: Email
+                , _urVerified :: Bool
+                , _urCreated  :: UTCTime
+                , _urLoggedIn :: UTCTime
+                } deriving (Show, Eq)
+             </code></pre>
+          </section>
+				  <section>
+              <h3>JSON - Aeson</h3>
+              <pre><code data-trim data-noescape>
+              instance ToJSON UserR where
+                toJSON u =
+                  object [ "user_id"   .= (u ^. urUserId)
+                         , "username"  .= (u ^. urUsername)
+                         , "email"     .= (u ^. urEmail)
+                         , "verified"  .= (u ^. urVerified)
+                         , "created"   .= (u ^. urCreated)
+                         , "logged_in" .= (u ^. urLoggedIn)
+                         ]
+             </code></pre>
+          </section>
+				  <section>
+              <h3>JSON - Aeson</h3>
+              <pre><code data-trim data-noescape>
+              instance FromJSON UserW where
+                parseJSON (Object v) = UserW
+                  <$> (v .: "username"  >>= vUsn)
+                  <*> (v .: "password0" >>= vPwd)
+                  <*> (v .: "password1" >>= vPwd)
+                  <*> (v .: "email"     >>= vEml)
+                  where
+                    val  = either (fail . show) (pure . fromJust)
+                    vUsn = val . validateUsername
+                    vPwd = val . validatePassword
+                    vEml = val . validateEmail
+                parseJSON _ = mzero
+             </code></pre>
+          </section>
+				  <section>
+              <h3>JSON - Validation</h3>
+              <pre><code data-trim data-noescape>
+              validateUsername :: Maybe Username ->
+                                  Either ValidationError (Maybe Username)
+              validateUsername u@(Just (Username v))
+                | l < 3     = Left $ TooShort "username" l
+                | l > 30    = Left $ TooLong "username" l
+                | otherwise = Right u
+                where
+                  l = T.length v
+              validateUsername _ = Right Nothing
+             </code></pre>
+          </section>
+				  <section>
+              <h3>Conclusion</h3>
+              <section>Strong types, no NULL, compile time guarantees = bug free, easily refactorable software.</section>
+              <section>Steep initial learning curve, but high payoff due to high level abstractions.</section>
+              <section>Haskell positions are coveted in the industry. Your programmer friend circles in the know will be jealous.</section>
+              <section>Production Haskell experience sets you above the competition.</section>
+          </section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
