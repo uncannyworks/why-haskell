@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>Why Haskell?</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/night.css">
@@ -34,18 +34,35 @@
 				  <section>
               <h3>Haskell Motivation</h3>
               <section>
-                  <p>Easy to reason about code.</p>
-                  <p>Focus on the small, not the large.</p>
+                  <p>Build complex, scalable, maintainable software systems.</p>
               </section>
               <section>
-                  <p>High chance of bug free software due to strong types.</p>
-                  <p>Stong types lead to more correct software.</p>
+                  <p>Reduce programmer cognitive overload.</p>
+                  <p class="fragment fade-in"><small>Produce easy to reason about code.</small></p>
+                  <p class="fragment fade-in"><small>Focus on the small, not the large.</small></p>
               </section>
-              <section>Ease of long term maintenance due to refactoring without fear.</section>
               <section>
-                  <p>Fast.</p>
-                  <p>Low memory.</p>
-                  <p>Binary.</p>
+                  <p>Reduce the number of bugs with strong compile time checks.</p>
+                  <p class="fragment fade-in"><small>Prefer catching problems at compile time.</small></p>
+                  <p class="fragment fade-in"><small>Reduce testing surface.</small></p>
+              </section>
+              <section>
+                  <p>Utilize stong types to build correct software.</p>
+                  <p class="fragment fade-in"><small>Describe complex domains.</small></p>
+                  <p class="fragment fade-in"><small>Runtime guarantees.</small></p>
+              </section>
+              <section>
+                  <p>Ease of long term maintenance.</p>
+                  <p class="fragment fade-in"><small>Refactor heavily without fear.</small></p>
+                  <p class="fragment fade-in"><small>Types help guide compilation.</small></p>
+              </section>
+              <section>
+                  <p>Fast</p>
+                  <p class="fragment fade-in"><small>Hand tuned code can reach C speeds.</small></p>
+                  <p>Low memory</p>
+                  <p class="fragment fade-in"><small>Although we have to watch out for "space leaks".</small></p>
+                  <p>Binary</p>
+                  <p class="fragment fade-in"><small>No runtime, deploy as-is.</small></p>
               </section>
           </section>
 				  <section>
@@ -76,34 +93,61 @@
                       </ul>
               </section>
               <section>
+                  <p>High learning curve.</p>
+                  <p class="fragment shrink">If I don't grasp it in a day I will never be productive.</p>
+              </section>
+              <section>
                   <p>Smaller community compared to other popular languages.</p>
-                  <p class="fragment fade-in">Therefore smaller library ecosystem.</p>
               </section>
           </section>
 				  <section>
               <h3>Benefits</h3>
-              <section>Pure. Equational reasoning.</section>
-              <section>IO is separate. Controlled side effects.</section>
-              <section>Strongly typed. Hindley-Milner type system. Algebraic Data Types.</section>
-              <section>Immutable. No possibility of mis-referencing variables and stomping on data.</section>
-              <section>No NULL. Compile time guarantees that your application won’t crash.</section>
-              <section>Functional. Better abstractions. More reusable code.</section>
-              <section>Lazy evaluation.</section>
+              <section>
+                  <p>Pure.</p>
+                  <p><small>Equational reasoning.</small></p>
+              </section>
+              <section>
+                  <p>IO is separate.</p>
+                  <p><small>Controlled side effects.</small></p>
+              </section>
+              <section>
+                  <p>Strongly typed.</p>
+                  <p><small>Hindley-Milner type system.</small></p>
+                  <p><small>Algebraic Data Types.</small></p>
+              </section>
+              <section>
+                  <p>Immutable.</p>
+                  <p><small>No possibility of mis-referencing variables and stomping on data.</small></p>
+              </section>
+              <section>
+                  <p>No NULL.</p>
+                  <p><small>Compile time guarantees that your application won’t crash.</small></p>
+              </section>
+              <section>
+                  <p>Functional.</p>
+                  <p><small>Great abstractions.</small></p>
+                  <p><small>More reusable code.</small></p>
+              </section>
+              <section>
+                  <p>Lazy evaluation.</p>
+                  <p><small>But strict when you want it.</small></p>
+              </section>
           </section>
 				  <section>
               <h3>Secret Weapon</h3>
-              <p>Refactor with impunity</p>
+              <p>Refactor with Impunity</p>
               <section>Come back to an old project 6-12 months later and dive right in.</section>
               <section>The compiler will guide you until everything builds cleanly.</section>
               <section>No more wondering if an unrelated sub-module will break in production.</section>
           </section>
 				  <section>
               <h3>Compile Time Guarantees</h3>
-              <blockquote>“If it compiles, it does exactly what you wanted.” -- Haskellers</blockquote>
-              <section>Strong type system makes it much harder to make mistakes.</section>
+              <blockquote>“If it compiles, it does exactly what you want.” -- Haskellers</blockquote>
+              <section>Type safety makes it much harder to make mistakes.</section>
               <section>Pattern matching makes it impossible to pass non-compliant parameters to functions.</section>
               <section>
-                  <p>No NULL. Maybe and Either types allow all possible failure cases to be handled.</p>
+                  <p>No NULL.</p>
+                  <p>Maybe and Either types allow all possible failure cases to be handled.</p>
                   <p class="fragment fade-in"><small>There's exception handlers too, but we'll skip those for now.</small></p>
               </section>
               <section>
@@ -128,18 +172,22 @@
                   </div>
               </section>
 				      <section>
-                  IO
+                  <p>IO</p>
                   <pre><code data-trim data-noescape>
                   add :: Int -> Int -> IO Int
                   add x y = do
-                    fireTheMissiles -- this is possible
+                    fireTheMissiles
                     return (x + y)
                   </code></pre>
-                  Pure
+                  <p><small>This is of course possible, but...</small></p>
+              </section>
+				      <section>
+                  <p>Pure</p>
                   <pre><code data-trim data-noescape>
                   add :: Int -> Int -> Int
-                  add x y = x + y -- we can't fireTheMissiles here
+                  add x y = x + y
                   </code></pre>
+                  <p><small>It's impossible to call IO code in a pure function.</small></p>
               </section>
           </section>
 				  <section>
@@ -214,8 +262,14 @@
 				  <section>
               <h3>Functional</h3>
               <section>More focus on generality ends up with better abstractions.</section>
-              <section>Less focus on <i>how</i> to manipulate data and more on pipelining to the final result.</section>
-              <section>Higher level abstractions means less code and easier to reason about.</section>
+              <section>
+                  <p>Less focus on <i>how</i> to manipulate data.</p>
+                  <p>More on achieving the final result.</p>
+              </section>
+              <section>
+                  <p>Higher level abstractions means less code.</p>
+                  <p><small>Making it easier to reason about.</small></p>
+              </section>
               <section>Composability.</section>
           </section>
 				  <section>
@@ -247,6 +301,10 @@
                   vs
                   <pre><code data-trim data-noescape>
                   add 10 . sub 5 . div 6 $ 4
+                  </code></pre>
+                  <pre><code data-trim data-noescape>
+                  let add10 = (+10)
+                  add10 . sub 5 . div 6 $ 4
                   </code></pre>
               </section>
           </section>
@@ -457,11 +515,9 @@
 				  <section>
               <h3>Conclusion</h3>
               <section>
-                  <p>Strong types, no NULL, compile time guarantees</p>
-                  =
-                  <p>bug free, easily refactorable software.</p>
+                  <p>Steep initial learning curve.</p>
+                  <p>Extremely high payoff.</p>
               </section>
-              <section>Steep initial learning curve, but high payoff due to high level abstractions.</section>
           </section>
 			</div>
 		</div>
