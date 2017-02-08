@@ -160,7 +160,7 @@
 				      <section>
                   <div style="float:left;width:60%;">
                       C
-                      <pre><code data-trim data-noescape>
+                      <pre><code class="haskell" data-trim data-noescape>
                       int add(int a, int b) {
                         fireTheMissiles();
                         return a + b;
@@ -173,7 +173,7 @@
               </section>
 				      <section>
                   <p>IO</p>
-                  <pre><code data-trim data-noescape>
+                  <pre><code class="haskell" data-trim data-noescape>
                   add :: Int -> Int -> IO Int
                   add x y = do
                     fireTheMissiles
@@ -183,7 +183,7 @@
               </section>
 				      <section>
                   <p>Pure</p>
-                  <pre><code data-trim data-noescape>
+                  <pre><code class="haskell" data-trim data-noescape>
                   add :: Int -> Int -> Int
                   add x y = x + y
                   </code></pre>
@@ -193,7 +193,19 @@
 				  <section>
               <h3>Algebraic Data Types</h3>
 				      <section>
-                  <pre><code data-trim data-noescape>
+                  <pre><code class="haskell" data-trim data-noescape>
+                  data Status = Open | Closed | Canceled String
+                  -----------   -------------------------------
+                  Type          Constructors
+                  </code></pre>
+                  <pre><code class="haskell" data-trim data-noescape>
+                  data Tree a = Nil | Node (Tree a) a (Tree a)
+                  -----------
+                  Polymorphism
+                  </code></pre>
+				      </section>
+				      <section>
+                  <pre><code class="haskell" data-trim data-noescape>
                   data Animal = Dog String | Cat String
 
                   talk :: Animal -> String
@@ -208,7 +220,7 @@
 				      </section>
 				      <section>
                   <h4>Polymorphism</h3>
-                  <pre><code data-trim data-noescape>
+                  <pre><code class="haskell" data-trim data-noescape>
                   data Shape a = Circle a | Rectangle a a
 
                   area :: (Num a, Floating a) => Shape a -> a
@@ -229,7 +241,7 @@
               </section>
 				      <section>
                   <h4>Maybe</h3>
-                  <pre><code data-trim data-noescape>
+                  <pre><code class="haskell" data-trim data-noescape>
                   data Maybe a = Nothing | Just a
 
                   f :: Int -> Maybe Int
@@ -244,7 +256,7 @@
               </section>
 				      <section>
                   <h4>Either</h4>
-                  <pre><code data-trim data-noescape>
+                  <pre><code class="haskell" data-trim data-noescape>
                   data Either a b = Left a | Right b
 
                   f :: Int -> Either String Int
@@ -261,23 +273,24 @@
           </section>
 				  <section>
               <h3>Functional</h3>
-              <section>More focus on generality ends up with better abstractions.</section>
               <section>
-                  <p>Less focus on <i>how</i> to manipulate data.</p>
-                  <p>More on achieving the final result.</p>
+                  <p>More focus on generality ends up with better abstractions.</p>
               </section>
               <section>
                   <p>Higher level abstractions means less code.</p>
                   <p><small>Making it easier to reason about.</small></p>
               </section>
-              <section>Composability.</section>
+              <section>
+                  <p>Less focus on <i>how</i> to manipulate data.</p>
+                  <p>More on achieving the final result.</p>
+              </section>
           </section>
 				  <section>
               <h3>Functional vs. Imperative</h3>
 				      <section>
                   <div style="float:left;width:50%;">
                       C
-                      <pre><code data-trim data-noescape>
+                      <pre><code class="haskell" data-trim data-noescape>
                       int x = 0;
                       for (int i = 0; i < 10; i++)
                       {
@@ -285,7 +298,7 @@
                       }
                       </code></pre>
                       Haskell
-                      <pre><code data-trim data-noescape>
+                      <pre><code class="haskell" data-trim data-noescape>
                       let x = foldr (+) 0 [0..9]
                       </code></pre>
                   </div>
@@ -295,17 +308,57 @@
               </section>
 				      <section>
                   <h4>Composability</h4>
-                  <pre><code data-trim data-noescape>
+                  <pre><code class="haskell" data-trim data-noescape>
                   add(10, sub(5, div(6, 4)));
                   </code></pre>
                   vs
-                  <pre><code data-trim data-noescape>
+                  <pre><code class="haskell" data-trim data-noescape>
                   add 10 . sub 5 . div 6 $ 4
                   </code></pre>
-                  <pre><code data-trim data-noescape>
+                  <pre><code class="haskell" data-trim data-noescape>
                   let add10 = (+10)
                   add10 . sub 5 . div 6 $ 4
                   </code></pre>
+              </section>
+				      <section>
+                  <h4>Imperative Style</h4>
+                  <pre><code class="haskell" data-trim data-noescape>
+                  add :: IO ()
+                  add = do
+                    x <- getLine
+                    y <- getLine
+                    return (read x + read y)
+                  </code></pre>
+                  vs
+                  <pre><code class="haskell" data-trim data-noescape>
+                  add :: IO ()
+                  add = getLine >>= \x -> getLine >>= \y ->
+                        return (read x + read y)
+                  </code></pre>
+              </section>
+          </section>
+				  <section>
+				      <section>
+                  <h4>Haskell</h4>
+                  <pre><code class="haskell" data-trim data-noescape>
+                  main = do
+                      putStrLn "Hello. What is your name?"
+                      x <- getLine
+                      putStrLn ("The input was " ++ x)
+                  </code></pre>
+                  <p><small><a href="https://e.xtendo.org/monad#25">https://e.xtendo.org/monad#25</a></small></p>
+              </section>
+          </section>
+				  <section>
+				      <section>
+                  <h4>Python</h4>
+                  <pre><code class="python" data-trim data-noescape>
+                  if __name__ == '__main__':
+                      print   ('Hello. What is your name?')
+                      x = input()
+                      print    ('The input was ' + x)
+                  </code></pre>
+                  <p><small><a href="https://e.xtendo.org/monad#26">https://e.xtendo.org/monad#26</a></small></p>
               </section>
           </section>
 				  <section>
@@ -313,21 +366,21 @@
               <a href="https://www.haskellstack.org">Stack</a>
 				      <section>
                   <h4>New Project</h4>
-                  <pre><code data-trim data-noescape>
+                  <pre><code class="bash" data-trim data-noescape>
                   stack new project
                   cd project
                   </code></pre>
               </section>
 				      <section>
                   <h4>Configuration</h4>
-                  <pre><code data-trim data-noescape>
+                  <pre><code class="bash" data-trim data-noescape>
                   # edit project.cabal -- libraries, build settings, etc.
                   # maybe edit stack.yaml -- one off libraries, settings, etc.
                   </code></pre>
               </section>
 				      <section>
                   <h4>Usage</h4>
-                  <pre><code data-trim data-noescape>
+                  <pre><code class="bash" data-trim data-noescape>
                   stack setup # one time thing -- pulls in compiler version
                   stack test # run tests
                   stack bench # run any code benchmarks
@@ -345,178 +398,20 @@
               </ul>
           </section>
 				  <section>
-              <h3>AlasConnect Tech Stack</h3>
-              <p>Type check from the UI down to the DB</p>
-              <section>
-                  <h4>Key Libraries</h4>
-                  <p>UI: <a href="https://hackage.haskell.org/package/reflex">reflex</a>/<a href="https://hackage.haskell.org/package/reflex-dom">reflex-dom</a> (FRP)</p>
-                  <p>API: <a href="https://hackage.haskell.org/package/servant-server">servant</a> (<a href="https://haskell-servant.readthedocs.io">docs</a>)</p>
-                  <p>DB: <a href="https://github.com/k0001/tisch">tisch</a> (PostgreSQL)</p>
-                  <p><small>(<a href="http://ren.zone/articles/opaleye-sot">explanation</a>) (<a href="https://hackage.haskell.org/package/opaleye">opaleye</a>)</small></p>
-              </section>
-              <section>
-                  <h4>Additional Libraries</h4>
-                  <p>JSON/Yaml: <a href="https://hackage.haskell.org/package/aeson">aeson</a></p>
-                  <p>Encryption: <a href="https://hackage.haskell.org/package/scrypt">scrypt</a></p>
-              </section>
-          </section>
-				  <section>
-              <h3>AlasConnect Tech Stack</h3>
-              <section>
-                  <p>Frontend and backend share common logic allowing for reuse of code.</p>
-                  <p>(No split brain)</p>
-              </section>
-              <section>Frontend compiles to a single page application with GHCJS.</section>
-              <section>Backend compiles to a binary with GHC and exposes a REST API.</section>
-          </section>
-				  <section>
-              <h3>Database - Tisch (Opaleye)</h3>
-				      <section>
-                  <p>Explicit typing constrains table types.</p>
-                  <pre><code data-trim data-noescape>
-                  data Db1
-                  data TUser
-                  data instance Table TUser      = TUser
-                  type instance Database TUser   = Db1
-                  type instance SchemaName TUser = "public"
-                  type instance TableName TUser  = "users"
-
-                  newtype UserId = UserId { unUserId :: Int32 }
-                  -- and a few more instances to help with tisch logic
-                  </code></pre>
-              </section>
-				      <section>
-                  <p>Define columns as Haskell types.</p>
-                  <pre><code data-trim data-noescape>
-                  type instance Columns TUser =
-                    [ 'Column "user_id"   'WD 'R  UserId        UserId
-                    , 'Column "username"  'W  'R  Username      Username
-                    , 'Column "password"  'W  'R  PasswordE     PasswordE
-                    , 'Column "email"     'W  'R  Email         Email
-                    , 'Column "verify_t"  'W  'R  Token         Token
-                    , 'Column "verified"  'WD 'R  PGBool        Bool
-                    , 'Column "created"   'WD 'R  PGTimestamptz UTCTime
-                    , 'Column "logged_in" 'WD 'R  PGTimestamptz UTCTime
-                    ]
-                  </code></pre>
-                  <p>Or keep them as raw PG types.</p>
-              </section>
-				      <section>
-                  <p>Generate completely type safe SQL.</p>
-                  <pre><code data-trim data-noescape>
-                  userQueryById :: UserId -> Query Db1 () (PgR TUser)
-                  userQueryById uid = proc () -> do
-                    u <- query TUser -< ()
-                    restrict -< eq (#user_id u) (kol uid)
-                    returnA -< u
-
-                  userFetch :: (MonadIO m, MonadThrow m) =>
-                               UserId -> Conn' -> m (Maybe (HsR TUser))
-                  userFetch uid conn = runQuery1 conn (userQueryById uid)
-                  </code></pre>
-              </section>
-          </section>
-				  <section>
-              <h3>API - Servant</h3>
-				      <section>
-                  <p>Type constrained APIs.</p>
-                  <pre><code data-trim data-noescape>
-                  type UserGet =
-                    AppAuth :> Capture "id" UserId :> Get '[JSON] (Maybe UserR)
-                  type UserInsert =
-                    ReqBody '[JSON] UserW :> Post '[JSON] (Maybe UserR)
-                  type UserUpdate =
-                    AppAuth :> ReqBody '[JSON] UserU :> Put '[JSON] ()
-                  </code></pre>
-              </section>
-				      <section>
-                  <p>Simple business logic.</p>
-                  <pre><code data-trim data-noescape>
-                  getUser :: Maybe Session -> UserId -> AppM (Maybe UserR)
-                  getUser ms uid =
-                    withSession ms $ \_ ->
-                      getConn >>= userFetch uid >>= mapM (pure . hsRToUserR)
-
-                  insertUser :: UserW -> AppM (Maybe UserR)
-                  insertUser u = do
-                    r <- userInsert u =<< getConn
-                    case r of
-                      Left e   -> throwError err400 { errBody = pack . show $ e }
-                      Right r' -> mapM (pure . hsRToUserR) r'
-                  </code></pre>
-              </section>
-          </section>
-				  <section>
-              <h3>UI - Reflex</h3>
-              <pre><code data-trim data-noescape>
-             </code></pre>
-          </section>
-				  <section>
-              <h3>JSON - Aeson</h3>
-				      <section>
-                  <p>Standard Haskell records (structs).</p>
-                  <pre><code data-trim data-noescape>
-                  data UserR
-                    = UserR
-                    { _urUserId   :: UserId
-                    , _urUsername :: Username
-                    , _urPassword :: PasswordE
-                    , _urEmail    :: Email
-                    , _urVerified :: Bool
-                    , _urCreated  :: UTCTime
-                    , _urLoggedIn :: UTCTime
-                    } deriving (Show, Eq)
-                  </code></pre>
-              </section>
-				      <section>
-                  <pre><code data-trim data-noescape>
-                  instance ToJSON UserR where
-                    toJSON u =
-                      object [ "user_id"   .= (u ^. urUserId)
-                             , "username"  .= (u ^. urUsername)
-                             , "email"     .= (u ^. urEmail)
-                             , "verified"  .= (u ^. urVerified)
-                             , "created"   .= (u ^. urCreated)
-                             , "logged_in" .= (u ^. urLoggedIn)
-                             ]
-                  </code></pre>
-              </section>
-				      <section>
-                  <pre><code data-trim data-noescape>
-                  instance FromJSON UserW where
-                    parseJSON (Object v) = UserW
-                      <$> (v .: "username"  >>= vUsn)
-                      <*> (v .: "password0" >>= vPwd)
-                      <*> (v .: "password1" >>= vPwd)
-                      <*> (v .: "email"     >>= vEml)
-                      where
-                        val  = either (fail . show) (pure . fromJust)
-                        vUsn = val . validateUsername
-                        vPwd = val . validatePassword
-                        vEml = val . validateEmail
-                    parseJSON _ = mzero
-                  </code></pre>
-              </section>
-				      <section>
-                  <h4>Validation</h4>
-                  <pre><code data-trim data-noescape>
-                  validateUsername :: Maybe Username ->
-                                      Either ValidationError (Maybe Username)
-                  validateUsername u@(Just (Username v))
-                    | l < 3     = Left $ TooShort "username" l
-                    | l > 30    = Left $ TooLong "username" l
-                    | otherwise = Right u
-                    where
-                      l = T.length v
-                  validateUsername _ = Right Nothing
-                  </code></pre>
-              </section>
-          </section>
-				  <section>
               <h3>Conclusion</h3>
               <section>
                   <p>Steep initial learning curve.</p>
-                  <p>Extremely high payoff.</p>
+                  <p>Extremely high long term payoff.</p>
+              </section>
+          </section>
+          <section>
+              <h3>Homework</h3>
+              <section>
+                  <h4>Reading</h4>
+                  <p><a href="http://haskellbook.com">Haskell Book</a></p>
+                  <h4>Communities</h4>
+                  <p><a href="https://www.reddit.com/r/haskell/">/r/haskell</a></p>
+                  <p><a href="https://wiki.haskell.org/Mailing_lists">haskell-cafe@haskell.org</a></p>
               </section>
           </section>
 			</div>
